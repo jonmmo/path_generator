@@ -52,5 +52,7 @@ lb = zeros(3,1);
 
 
 % quadratic programming
+options = optimoptions('quadprog','Display','final-detailed');
+[x,fval,exitflag,output,lambda] = quadprog(W_456,f,A,b,[],[],lb,[], options)
 
 end
