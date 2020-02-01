@@ -12,14 +12,14 @@ objective = 1; % Objective function
 
 % Tuning variables
 order = 8; % not used now
-zeta = sqrt(8); % wall distance
+zeta = 2; % wall distance
 k_max = 20; % max curvature
 posib = 20; % size of search space
 Delta_max = sqrt(128); % maximum distance between two waypoints
 
 % Define waypoints
 WP = [-4 4; 0 4; 4 0; 8 4; 12 8; 20 0; 24 4; 28 4]; % zig-zag 
-WP =[0 0; 2 -2; 4 -2; 6 0; 6 2; 2 6; 2 8; 4 10; 6 10; 8 8; 8 6]; % S-shape
+%WP =[0 0; 2 -2; 4 -2; 6 0; 6 2; 2 6; 2 8; 4 10; 6 10; 8 8; 8 6]; % S-shape
 % Initial heading
 psi_init = 0;
 
@@ -28,6 +28,10 @@ P_b = blending_function(n,theta);
 
 % Initialize variables
 [CP_prev,psi_prev, Q, c, v, colorvec] = init_conditions(psi_init);
+
+repl_seg = 5;
+color = 1;
+theta_x = 0.5;
 
 for i = 1:length(WP)-1 % for each path segment
     
@@ -38,20 +42,28 @@ for i = 1:length(WP)-1 % for each path segment
 
     CP = init_cp(WP_current, psi_prev, WP_next, psi_next, i, CP_prev);
     
+    
     %search_space = init_search_space(WP_current, WP_next, posib);
     
     CP_opt = quadratic_programming(CP, n, zeta, psi_next);
+    
+    if i == repl_seg
+        CP_opt = replan(theta_x, theta, Bezier, CP_opt);
+        
+        color = color +1;
+    end
+    
     
     q = distance(CP_opt, P_b.dot_B_blending);
     Q = Q + q;
     
     % Calculate Bezier
-    Bezier = calculate_bezier(CP_opt,P_b);
+    Bezier = calculate_bezier(CP_opt, P_b);
     
     
     %% Plotting
     figure(1); grid on; axis equal;
-    ff(c) = plot(Bezier.B_matrix(:,1), Bezier.B_matrix(:,2), 'Color', colorvec{1}, "LineWidth", 1.5); hold on;
+    ff(c) = plot(Bezier.B_matrix(:,1), Bezier.B_matrix(:,2), 'Color', colorvec{color}, "LineWidth", 1.5); hold on;
     rr(c) = plot(CP_opt(:,1), CP_opt(:,2), 'k.-', 'markersize', 10); hold on;
     % plot walls:
     u = (WP_next - WP_current)/norm(WP_next - WP_current); % unit vector
@@ -64,7 +76,7 @@ for i = 1:length(WP)-1 % for each path segment
 
            
     figure(2); grid on; axis equal;
-    oo(c) = plot(Bezier.B_matrix(:,1), Bezier.B_matrix(:,2), 'Color', colorvec{1}, "LineWidth", 1.5); hold on;
+    oo(c) = plot(Bezier.B_matrix(:,1), Bezier.B_matrix(:,2), 'Color', colorvec{color}, "LineWidth", 1.5); hold on;
     % plot walls
     u = (WP_next - WP_current)/norm(WP_next - WP_current); % unit vector    
     s = zeta*u;    % distance away    
