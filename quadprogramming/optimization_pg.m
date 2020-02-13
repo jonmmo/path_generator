@@ -12,14 +12,14 @@ objective = 1; % Objective function
 
 % Tuning variables
 order = 8; % not used now
-zeta = 2; % wall distance
+zeta = 0.5; % wall distance
 k_max = 20; % max curvature
 posib = 20; % size of search space
 Delta_max = sqrt(128); % maximum distance between two waypoints
 
 % Define waypoints
 WP = [-4 4; 0 4; 4 0; 8 4; 12 8; 20 0; 24 4; 28 4]; % zig-zag 
-%WP =[0 0; 2 -2; 4 -2; 6 0; 6 2; 2 6; 2 8; 4 10; 6 10; 8 8; 8 6]; % S-shape
+WP =[0 0; 2 -2; 4 -2; 6 0; 6 2; 2 6; 2 8; 4 10; 6 10; 8 8; 8 6]; % S-shape
 % Initial heading
 psi_init = 0;
 
@@ -29,7 +29,8 @@ P_b = blending_function(n,theta);
 % Initialize variables
 [CP_prev,psi_prev, Q, c, v, colorvec] = init_conditions(psi_init);
 
-repl_seg = 5;
+repl_seg1 = 20;
+repl_seg2 = 20;
 color = 1;
 theta_x = 0.5;
 
@@ -47,7 +48,7 @@ for i = 1:length(WP)-1 % for each path segment
     
     CP_opt = quadratic_programming(CP, n, zeta, psi_next);
     
-    if i == repl_seg
+    if i == repl_seg1 || i == repl_seg2
         CP_opt = replan(theta_x, theta, Bezier, CP_opt);
         
         color = color +1;
