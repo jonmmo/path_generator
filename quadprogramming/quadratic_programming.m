@@ -56,8 +56,8 @@ lb = (x7/2)*ones(3,1); %zeros(3,1);
 ub = x7*ones(3,1);
 
 %%  quadratic programming
-options = optimoptions('quadprog','Display','final-detailed');
-[x,fval,exitflag,output,lambda] = quadprog(W_456,f,A,b,[],[],lb,ub,[], options)
+options = optimoptions('quadprog','Display','none');
+[x,fval,exitflag,output,lambda] = quadprog(W_456,f,A,b,[],[],lb,ub,[], options);
 
 CP_opt_path = [CP_path(1:4,:);
                x(1), CP_path(5,2);
