@@ -30,7 +30,7 @@ P_b = blending_function(n,theta);
 
 % Replanning.
 repl_seg1 = 3;
-repl_seg2 = 20;
+repl_seg2 = 5;
 color = 1;
 theta_x = 0.5;
 
@@ -56,14 +56,11 @@ for i = 1:length(WP)-1 % for each path segment
         color = color + 1;
         
         % Update s
-        omega = omega + (theta_x + [0:h:1]);
         om = om + theta_x;
-        % theta = 0
-        s = (j-1) + omega;
+        s = (j-1) + om + theta;
     else % Regular
         j = j + 1;
         s = theta + (j-1) + om;
-    
     end
     
     % Calculate arc length
@@ -96,19 +93,19 @@ for i = 1:length(WP)-1 % for each path segment
     figure(3); grid on;
     subplot(3,1,1); grid on;
     fig3_sub1(v) = plot( s , Bezier.direction, 'Color', colorvec{color}, "LineWidth", 1.5); hold on;
-    xlabel('$\theta+i-1, \: \theta \in [0,1], \: i \in \mathcal{I}^m$', 'Interpreter','latex','FontSize',12)
+    xlabel('$s =\theta+(i-1)+\omega, \: \theta \in [0,1], \: i \in \mathcal{I}^m$', 'Interpreter','latex','FontSize',12)
     ylabel('$[deg]$','Interpreter','latex','FontSize',12)
     title('\textbf{Path direction}','Interpreter','latex','FontSize',12)
     % Curvature
     subplot(3,1,2); grid on;
     fig3_sub2(v) = plot( s , Bezier.K, 'Color', colorvec{color},"LineWidth",1.5); hold on;
-    xlabel('$\theta+i-1, \: \theta \in [0,1], \: i \in \mathcal{I}^m$', 'Interpreter','latex','FontSize',12,'fontweight','bold')
+    xlabel('$s =\theta+(i-1)+\omega, \: \theta \in [0,1], \: i \in \mathcal{I}^m$', 'Interpreter','latex','FontSize',12,'fontweight','bold')
     ylabel('$[1/m]$','Interpreter','latex','FontSize',12)
     title('\textbf{Path curvature}','Interpreter','latex','FontSize',12)
     % Rate of change in curvature
     subplot(3,1,3); grid on;
     fig3_sub3(v) = plot( s , Bezier.dot_K, 'Color', colorvec{color},"LineWidth",1.5); hold on;
-    xlabel('$\theta+i-1, \: \theta \in [0,1], \: i \in \mathcal{I}^m$', 'Interpreter','latex','FontSize',12)
+    xlabel('$s =\theta+(i-1)+\omega, \: \theta \in [0,1], \: i \in \mathcal{I}^m$', 'Interpreter','latex','FontSize',12)
     ylabel('$[1/m^2]$','Interpreter','latex','FontSize',12)
     title('\textbf{Rate of change in path curvature}','Interpreter','latex','FontSize',12)
     v = v + 1;
