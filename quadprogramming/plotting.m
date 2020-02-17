@@ -41,23 +41,23 @@ title('\textbf{Rate of change in path curvature}','Interpreter','latex','FontSiz
 figure(4);
 % first derivative
 subplot(3,1,1); grid on;
-plt_strct.x_d(v) = plot(s, Bezier.dot_B_matrix(:,1), 'Color', 'r',"LineWidth",1.5); hold on;
-plt_strct.y_d(v) = plot(s, Bezier.dot_B_matrix(:,2), 'Color',  'b',"LineWidth",1.5); hold on;
+plt_strct.x_d(v) = plot(s, Bezier.dot_B_matrix(:,1), 'Color', colorvec{color} ,"LineWidth",1.5); hold on;
+plt_strct.y_d(v) = plot(s, Bezier.dot_B_matrix(:,2), 'Color',  colorvec{color} ,"LineWidth",1.5); hold on;
 xlabel('$\theta+i-1, \: \theta \in [0,1], \: i \in \mathcal{I}^m$', 'Interpreter','latex','FontSize',12)
 %ylabel('$[deg]$','Interpreter','latex','FontSize',12)
 title('\textbf{First derivative}','Interpreter','latex','FontSize',12)
 
 % second derivative
 subplot(3,1,2); grid on;
-plt_strct.x_dd(v) = plot(s, Bezier.ddot_B_matrix(:,1), 'Color', 'r',"LineWidth",1.5); hold on;
-plt_strct.y_dd(v) = plot(s, Bezier.ddot_B_matrix(:,2), 'Color',  'b',"LineWidth",1.5); hold on;
+plt_strct.x_dd(v) = plot(s, Bezier.ddot_B_matrix(:,1), 'Color', colorvec{color} ,"LineWidth",1.5); hold on;
+plt_strct.y_dd(v) = plot(s, Bezier.ddot_B_matrix(:,2), 'Color', colorvec{color} , "LineWidth" ,1.5); hold on;
 xlabel('$\theta+i-1, \: \theta \in [0,1], \: i \in \mathcal{I}^m$', 'Interpreter','latex','FontSize',12)
 %ylabel('$[deg]$','Interpreter','latex','FontSize',12)
 title('\textbf{Second derivative}','Interpreter','latex','FontSize',12)        
 % third derivative
 subplot(3,1,3); grid on;
-plt_strct.x_ddd(v) = plot(s, Bezier.dddot_B_matrix(:,1), 'Color', 'r',"LineWidth",1.5); hold on;
-plt_strct.y_ddd(v) = plot(s, Bezier.dddot_B_matrix(:,2), 'Color',  'b',"LineWidth",1.5); hold on;
+plt_strct.x_ddd(v) = plot(s, Bezier.dddot_B_matrix(:,1), 'Color', colorvec{color} ,"LineWidth",1.5); hold on;
+plt_strct.y_ddd(v) = plot(s, Bezier.dddot_B_matrix(:,2), 'Color', colorvec{color} ,"LineWidth",1.5); hold on;
 xlabel('$\theta+i-1, \: \theta \in [0,1], \: i \in \mathcal{I}^m$', 'Interpreter','latex','FontSize',12)
 %ylabel('$[deg]$','Interpreter','latex','FontSize',12)
 title('\textbf{Third derivative}','Interpreter','latex','FontSize',12)
