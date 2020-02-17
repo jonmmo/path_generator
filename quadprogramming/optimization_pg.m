@@ -26,11 +26,11 @@ psi_init = 0;
 P_b = blending_function(n,theta); 
 
 % Initialize variables
-[CP_prev,psi_prev, Q, c, v, colorvec] = init_conditions(psi_init);
+[CP_prev,psi_prev, Q, plt_strct, v, colorvec] = init_conditions(psi_init);
 
 % Replanning.
-repl_seg1 = 3;
-repl_seg2 = 5;
+repl_seg1 = 20;
+repl_seg2 = 20;
 color = 1;
 theta_x = 0.5;
 
@@ -39,6 +39,8 @@ s = 0; % s = theta + (i-1) + omega
 j = 0;
 omega = 0;
 om = 0;
+
+
 
 for i = 1:length(WP)-1 % for each path segment
     
@@ -70,44 +72,8 @@ for i = 1:length(WP)-1 % for each path segment
     % Calculate Bezier
     Bezier = calculate_bezier(CP_opt, P_b);
     
-    %% Plotting
-    % Walls:
-    u = (WP_next - WP_current)/norm(WP_next - WP_current); % unit vector
-    z = zeta*u; % distance away
-    rot = [-z(2), z(1)]; % counter clockwise rotation
-    
-    % With ctrl points
-    figure(1); grid on; axis equal;
-    fig1_curve(c) = plot(Bezier.B_matrix(:,1), Bezier.B_matrix(:,2), 'Color', colorvec{color}, "LineWidth", 1.5); hold on;
-    fig1_ctrl_p(c) = plot(CP_opt(:,1), CP_opt(:,2), 'k.-', 'markersize', 10); hold on;
-    fig1_walls(c) = plot([WP_current(1); WP_next(1)]-rot(1,1),[WP_current(2); WP_next(2)]-rot(1,2),'--b'); hold on; 
-           plot([WP_current(1); WP_next(1)]+rot(1,1),[WP_current(2); WP_next(2)]+rot(1,2),'--b'); hold on;
-    
-    % Without ctrl points
-    figure(2); grid on; axis equal;
-    fig2_curve(c) = plot(Bezier.B_matrix(:,1), Bezier.B_matrix(:,2), 'Color', colorvec{color}, "LineWidth", 1.5); hold on;
-    fig2_walls(c) = plot([WP_current(1); WP_next(1)]-rot(1,1),[WP_current(2); WP_next(2)]-rot(1,2),'--b'); hold on; 
-           plot([WP_current(1); WP_next(1)]+rot(1,1),[WP_current(2); WP_next(2)]+rot(1,2),'--b'); hold on;
-           
-    % Direction and curvature for each type
-    figure(3); grid on;
-    subplot(3,1,1); grid on;
-    fig3_sub1(v) = plot( s , Bezier.direction, 'Color', colorvec{color}, "LineWidth", 1.5); hold on;
-    xlabel('$s =\theta+(i-1)+\omega, \: \theta \in [0,1], \: i \in \mathcal{I}^m$', 'Interpreter','latex','FontSize',12)
-    ylabel('$[deg]$','Interpreter','latex','FontSize',12)
-    title('\textbf{Path direction}','Interpreter','latex','FontSize',12)
-    % Curvature
-    subplot(3,1,2); grid on;
-    fig3_sub2(v) = plot( s , Bezier.K, 'Color', colorvec{color},"LineWidth",1.5); hold on;
-    xlabel('$s =\theta+(i-1)+\omega, \: \theta \in [0,1], \: i \in \mathcal{I}^m$', 'Interpreter','latex','FontSize',12,'fontweight','bold')
-    ylabel('$[1/m]$','Interpreter','latex','FontSize',12)
-    title('\textbf{Path curvature}','Interpreter','latex','FontSize',12)
-    % Rate of change in curvature
-    subplot(3,1,3); grid on;
-    fig3_sub3(v) = plot( s , Bezier.dot_K, 'Color', colorvec{color},"LineWidth",1.5); hold on;
-    xlabel('$s =\theta+(i-1)+\omega, \: \theta \in [0,1], \: i \in \mathcal{I}^m$', 'Interpreter','latex','FontSize',12)
-    ylabel('$[1/m^2]$','Interpreter','latex','FontSize',12)
-    title('\textbf{Rate of change in path curvature}','Interpreter','latex','FontSize',12)
+    % Plotting
+    plt_strct = plotting(WP_current, WP_next, CP_opt, zeta, Bezier, i, s, v, plt_strct, colorvec, color);
     v = v + 1;
     
     %%
@@ -118,14 +84,14 @@ end
 %% Plotting
 figure(1);
 plot(WP(:,1),WP(:,2),'ok','markersize',10); hold on;
-legend([fig1_curve(1),fig1_ctrl_p(1),fig1_walls(1)],'Septic $\boldmath{B}(\theta)$', 'Control polygon', 'Walls','Interpreter','latex');
+legend([plt_strct.fig1_curve(1),plt_strct.fig1_ctrl_p(1), plt_strct.fig1_walls(1)],'Septic $\boldmath{B}(\theta)$', 'Control polygon', 'Walls','Interpreter','latex');
 legend('-DynamicLegend','Location','Best');
 xlabel('$x$','Interpreter','latex')
 ylabel('$y$','Interpreter','latex')
 
 figure(2);
 plot(WP(:,1),WP(:,2),'ok','markersize',10); hold on;
-legend([fig2_curve(1),fig2_walls(1)],'Septic $\boldmath{B}(\theta)$', 'Walls','Interpreter','latex');
+legend([plt_strct.fig2_curve(1), plt_strct.fig2_walls(1)],'Septic $\boldmath{B}(\theta)$', 'Walls','Interpreter','latex');
 legend('-DynamicLegend','Location','Best');
 xlabel('$x$','Interpreter','latex')
 ylabel('$y$','Interpreter','latex')
@@ -136,4 +102,13 @@ z(1) = yline(k_max,'--b');
 ylim([-k_max-0.5, k_max+0.5])
 yline(-k_max,'--b');
 figure(3);
-legend([fig3_sub1(1) z(1)],'Septic $\boldmath{B}(\theta)$','$\kappa_{max}$','Interpreter','latex','Location','Best','AutoUpdate','off');
+legend([plt_strct.fig3_sub1(1) z(1)],'Septic $\boldmath{B}(\theta)$','$\kappa_{max}$','Interpreter','latex','Location','Best','AutoUpdate','off');
+
+
+figure(4);
+subplot(3,1,1);
+legend([plt_strct.x_d(1), plt_strct.y_d(1)],'$x^{''}(\theta)$','$y^{''}(\theta)$','Interpreter','latex','AutoUpdate','off');
+subplot(3,1,2);
+legend([plt_strct.x_dd(1), plt_strct.y_dd(1)],'$x^{''''}(\theta)$','$y^{''''}(\theta)$','Interpreter','latex','AutoUpdate','off');
+subplot(3,1,3);
+legend([plt_strct.x_ddd(1), plt_strct.y_ddd(1)],'$x^{(3)}(\theta)$','$y^{(3)}(\theta)$','Interpreter','latex','AutoUpdate','off');
