@@ -12,13 +12,13 @@ objective = 1; % Objective function
 
 % Tuning variables
 order = 8; % not used now
-zeta = 3; % wall distance
+zeta = 1.5; % wall distance
 k_max = 3; % max curvature
-posib = 20; % size of search space
 
 % Define waypoints
-WP = [-4 4; 0 4; 4 0; 8 4; 12 8; 16 4; 20 0; 24 4; 28 4]; % zig-zag 
+%WP = [-4 4; 0 4; 4 0; 8 4; 12 8; 16 4; 20 0; 24 4; 28 4]; % zig-zag 
 %WP =[0 0; 2 -2; 4 -2; 6 0; 6 2; 2 6; 2 8; 4 10; 6 10; 8 8; 8 6]; % S-shape
+WP =[0 0; 2 0; 6 -4; 10 -4; 14 0; 14 4; 6 12; 6 16; 10 20; 14 20; 18 16]; % S-shape
 % Initial heading
 psi_init = 0;
 
@@ -29,9 +29,9 @@ P_b = blending_function(n,theta);
 [CP_prev,psi_prev, Q, plt_strct, v, colorvec] = init_conditions(psi_init);
 
 % Replanning.
-repl_seg1 = 3;
-repl_seg2 = 5;
-repl_seg3 = 7;
+repl_seg1 = -3;
+repl_seg2 = -5;
+repl_seg3 = -7;
 color = 1;
 theta_x = 0.4;
 
@@ -60,7 +60,7 @@ for i = 1:length(WP)-1 % for each path segment
         
         % Update s
         om = om + theta_x;
-        s = (j-1) + om + theta;
+        s = theta + (j-1) + om;
     else % Regular
         j = j + 1;
         s = theta + (j-1) + om;
@@ -85,14 +85,16 @@ end
 %% Plotting. Sets labels.
 figure(1);
 plot(WP(:,1),WP(:,2),'ok','markersize',10); hold on;
-legend([plt_strct.fig1_curve(1),plt_strct.fig1_ctrl_p(1), plt_strct.fig1_walls(1)],'Septic $\boldmath{B}(\theta)$', 'Control polygon', 'Walls','Interpreter','latex');
+legend([plt_strct.fig1_curve(1),plt_strct.fig1_ctrl_p(1), plt_strct.fig1_walls(1)],'Septic $\boldmath{B}_{1 \times 2}(\theta)$', 'Control polygon', 'Walls','Interpreter','latex');
 legend('-DynamicLegend','Location','Best');
 xlabel('$x$','Interpreter','latex')
 ylabel('$y$','Interpreter','latex')
 
 figure(2);
 plot(WP(:,1),WP(:,2),'ok','markersize',10); hold on;
-legend([plt_strct.fig2_curve(1), plt_strct.fig2_walls(1)],'Septic $\boldmath{B}(\theta)$', 'Walls','Interpreter','latex');
+%legend([plt_strct.fig2_curve(1), plt_strct.fig2_walls(1)],'Septic $\boldmath{B}_{1 \times 2}(\theta)$', 'Walls','Interpreter','latex');
+
+legend([plt_strct.fig2_curve(1), plt_strct.fig2_curve(3), plt_strct.fig2_curve(5), plt_strct.fig2_curve(7), plt_strct.fig2_walls(1)], '1st $\boldmath{B}_{1 \times 2}(\theta)$', '2nd $\boldmath{B}_{1 \times 2}(\theta)$', '3th $\boldmath{B}_{1 \times 2}(\theta)$', '4th $\boldmath{B}_{1 \times 2}(\theta)$', 'Walls','Interpreter','latex');
 legend('-DynamicLegend','Location','Best');
 xlabel('$x$','Interpreter','latex')
 ylabel('$y$','Interpreter','latex')
@@ -103,13 +105,13 @@ z(1) = yline(k_max,'--b');
 ylim([-k_max-0.5, k_max+0.5])
 yline(-k_max,'--b');
 figure(3);
-legend([plt_strct.fig3_sub1(1) z(1)],'Septic $\boldmath{B}(\theta)$','$\kappa_{max}$','Interpreter','latex','Location','Best','AutoUpdate','off');
+legend([plt_strct.fig3_sub1(1) z(1)],'Septic $\boldmath{B}_{1 \times 2}(\theta)$','$\kappa_{max}$','Interpreter','latex','Location','Best','AutoUpdate','off');
 
 
 figure(4);
 subplot(3,1,1);
-legend([plt_strct.x_d(1), plt_strct.y_d(1)],'$x^{''}(\theta)$','$y^{''}(\theta)$','Interpreter','latex','AutoUpdate','off');
+legend([plt_strct.x_d(1), plt_strct.y_d(1)],'$x^{\theta}(\theta)$','$y^{\theta}(\theta)$','Interpreter','latex','AutoUpdate','off');
 subplot(3,1,2);
-legend([plt_strct.x_dd(1), plt_strct.y_dd(1)],'$x^{''''}(\theta)$','$y^{''''}(\theta)$','Interpreter','latex','AutoUpdate','off');
+legend([plt_strct.x_dd(1), plt_strct.y_dd(1)],'$x^{\theta^2}(\theta)$','$y^{\theta^2}(\theta)$','Interpreter','latex','AutoUpdate','off');
 subplot(3,1,3);
-legend([plt_strct.x_ddd(1), plt_strct.y_ddd(1)],'$x^{(3)}(\theta)$','$y^{(3)}(\theta)$','Interpreter','latex','AutoUpdate','off');
+legend([plt_strct.x_ddd(1), plt_strct.y_ddd(1)],'$x^{\theta^3}(\theta)$','$y^{\theta^3}(\theta)$','Interpreter','latex','AutoUpdate','off');

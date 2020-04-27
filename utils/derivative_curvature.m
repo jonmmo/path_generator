@@ -11,7 +11,7 @@ function dot_K = derivative_curvature(dot_B, ddot_B, dddot_B)
 %%
 
 
-dot_K = zeros(1, length(dot_B)); % change to size_t
+dot_K = zeros(1, length(dot_B));
 
 for i = 1:length(dot_B) 
     d_x = dot_B(i,1);

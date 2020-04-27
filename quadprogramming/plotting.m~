@@ -75,7 +75,7 @@ jj(v) = plot(s, Bezier.dtheta_v, 'Color', 'r',"LineWidth",1.5); hold on;
 ylabel('$v^{s}(s,t) \: [m/s]$','Interpreter','latex','FontSize',12)
 
 subplot(3,1,3); grid on;
-gg(v) = plot(s, Bezier.dt_v, 'Color', 'r',"LineWidth",1.5); hold on;
+gg(v) = plot(theta+i-1, Bezier.dt_v, 'Color', 'r',"LineWidth",1.5); hold on;
 ylabel('$v^{t}(s,t) \: [m/s^2]$','Interpreter','latex','FontSize',12)
 
 xlabel('$\theta+i-1, \: \theta \in [0,1], \: i \in \mathcal{I}^m$', 'Interpreter','latex','FontSize',12)

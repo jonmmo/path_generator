@@ -49,7 +49,7 @@ b2 = [-x7; -3*x7; -7*x7] + zeta;
 
 % Bigger than x7. TODO add eztra gap here to keep curvature low
 A3 = -A2;
-b3 = - ([-x7; -3*x7+ zeta/2; -7*x7+ zeta] );
+b3 = - ([-x7+zeta/3; -3*x7+zeta/3; -7*x7+zeta/3] );
 
 % x1_i+1 <= x2_i+1 <= x3_i+1
 A4 = [0 -1 3; 1 -5 8];
