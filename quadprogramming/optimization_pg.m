@@ -84,11 +84,11 @@ end
 
 %% Plotting. Sets labels.
 figure(1);
-plot(WP(:,1),WP(:,2),'ok','markersize',10); hold on;
-legend([plt_strct.fig1_curve(1),plt_strct.fig1_ctrl_p(1), plt_strct.fig1_walls(1)],'Septic $\boldmath{B}_{1 \times 2}(\theta)$', 'Control polygon', 'Walls','Interpreter','latex');
+fff = plot(WP(:,1),WP(:,2),'ok','markersize',10); hold on;
+legend([plt_strct.fig1_curve(1), plt_strct.fig1_ctrl_p(1), fff, plt_strct.fig1_walls(1)],'Septic $\boldmath{B}_{1 \times 2}(\theta)$', 'Control polygon', 'Waypoints', 'Walls','Interpreter','latex');
 legend('-DynamicLegend','Location','Best');
-xlabel('$x$','Interpreter','latex')
-ylabel('$y$','Interpreter','latex')
+xlabel('East $[m]$','Interpreter','latex','FontSize',12)
+ylabel('North $[m]$','Interpreter','latex','FontSize',12)
 
 figure(2);
 plot(WP(:,1),WP(:,2),'ok','markersize',10); hold on;
@@ -99,14 +99,13 @@ legend('-DynamicLegend','Location','Best');
 xlabel('$x$','Interpreter','latex')
 ylabel('$y$','Interpreter','latex')
 
-figure(3);
-subplot(3,1,2);
-z(1) = yline(k_max,'--b');
-ylim([-k_max-0.5, k_max+0.5])
-yline(-k_max,'--b');
-figure(3);
-legend([plt_strct.fig3_sub1(1) z(1)],'Septic $\boldmath{B}_{1 \times 2}(\theta)$','$\kappa_{max}$','Interpreter','latex','Location','Best','AutoUpdate','off');
-
+%figure(3);
+%subplot(3,1,2);
+%z(1) = yline(k_max,'--b');
+%ylim([-k_max-0.5, k_max+0.5])
+%yline(-k_max,'--b');
+%legend([plt_strct.fig3_sub1(1) z(1)],'Septic $\boldmath{B}_{1 \times 2}(\theta)$','$\kappa_{max}$','Interpreter','latex','Location','Best','AutoUpdate','off');
+Q
 
 figure(4);
 subplot(3,1,1);
@@ -115,3 +114,13 @@ subplot(3,1,2);
 legend([plt_strct.x_dd(1), plt_strct.y_dd(1)],'$x^{\theta^2}(\theta)$','$y^{\theta^2}(\theta)$','Interpreter','latex','AutoUpdate','off');
 subplot(3,1,3);
 legend([plt_strct.x_ddd(1), plt_strct.y_ddd(1)],'$x^{\theta^3}(\theta)$','$y^{\theta^3}(\theta)$','Interpreter','latex','AutoUpdate','off');
+
+figure(1)
+set(gcf, 'Color', 'w');
+figure(3)
+set(gcf, 'Color', 'w');
+figure(5)
+set(gcf, 'Color', 'w');
+export_fig(figure(1), 'xy_opt', '-eps');
+export_fig(figure(3), 'der_curv_dcurv_opt', '-eps');
+export_fig(figure(5), 'speedprof_opt', '-eps');

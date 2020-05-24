@@ -10,10 +10,10 @@ theta = 0:h:1;
 n = 8; % # control points
 
 % Tuning variables
-zeta = 1.5; % wall distance
+zeta = 1.7; % wall distance
 k_max = 5; % max curvature
-delta_min = 2; % Minimum distance from P4 to P7
-my = 6; % Scaling factor for distance between P4, P5, P6, and P7
+delta_min = 1.5; % Minimum distance from P4 to P7
+my = 3; % Scaling factor for distance between P4, P5, P6, and P7
 
 % Define waypoints
 %WP = [-4 4; 0 4; 4 0; 8 4; 12 8; 20 0; 24 4; 28 4]; % zig-zag 
@@ -61,19 +61,19 @@ for i = 1:length(WP)-1 % for each path segment
     subplot(3,1,1); grid on;
     hh(v) = plot(theta+i-1, Bezier.direction, 'Color', 'r', "LineWidth", 1.5); hold on;
     ylabel('$\psi(s) \: [deg]$','Interpreter','latex','FontSize',12)
-    title('\textbf{Path Direction}','Interpreter','latex','FontSize',12)
+    title('Path Direction','Interpreter','latex','FontSize',12)
     % Curvature
     subplot(3,1,2); grid on;
     jj(v) = plot(theta+i-1, Bezier.K, 'Color', 'r',"LineWidth",1.5); hold on;
     ylabel('$\kappa(s) \: [m^{-1}]$','Interpreter','latex','FontSize',12)
-    title('\textbf{Path Curvature}','Interpreter','latex','FontSize',12)
+    title('Path Curvature','Interpreter','latex','FontSize',12)
     % Rate of change in curvature
     subplot(3,1,3); grid on;
     gg(v) = plot(theta+i-1, Bezier.dot_K, 'Color', 'r',"LineWidth",1.5); hold on;
     ylabel('$\tau(s) \: [(m/s)^{-1}]$','Interpreter','latex','FontSize',12)
-    title('\textbf{Rate of Change in Path Curvature}','Interpreter','latex','FontSize',12)
+    title('Rate of Change in Path Curvature','Interpreter','latex','FontSize',12)
     
-    xlabel('$\theta+i-1, \: \theta \in [0,1], \: i \in \mathcal{I}^m$', 'Interpreter','latex','FontSize',12)
+    %xlabel('s = $\theta+i-1, \: \theta \in [0,1], \: i \in \mathcal{I}^m$', 'Interpreter','latex','FontSize',12)
     
     % Speed profile:
     
@@ -81,7 +81,7 @@ for i = 1:length(WP)-1 % for each path segment
     subplot(3,1,1); grid on;
     hh(v) = plot(theta+i-1, Bezier.v_d, 'Color', 'r', "LineWidth", 1.5); hold on;
     ylabel('$v(s,t) [m/s]$','Interpreter','latex','FontSize',12)
-    title('\textbf{The Speed Profile and its Respective Derivatives}','Interpreter','latex','FontSize',12)
+    title('The Speed Profile and its Respective Derivatives','Interpreter','latex','FontSize',12)
     
     subplot(3,1,2); grid on;
     jj(v) = plot(theta+i-1, Bezier.dtheta_v, 'Color', 'r',"LineWidth",1.5); hold on;
@@ -91,7 +91,7 @@ for i = 1:length(WP)-1 % for each path segment
     gg(v) = plot(theta+i-1, Bezier.dt_v, 'Color', 'r',"LineWidth",1.5); hold on;
     ylabel('$v^{t}(s,t) \: [m/s^2]$','Interpreter','latex','FontSize',12)
     
-    xlabel('$\theta+i-1, \: \theta \in [0,1], \: i \in \mathcal{I}^m$', 'Interpreter','latex','FontSize',12)    
+    xlabel('$s = \theta+i-1, \: \theta \in [0,1], \: i \in \mathcal{I}^m$', 'Interpreter','latex','FontSize',12)    
     
     figure(4);
     % first derivative
@@ -113,7 +113,7 @@ for i = 1:length(WP)-1 % for each path segment
     subplot(3,1,3); grid on;
     x_ddd(v) = plot(theta+i-1, Bezier.dddot_B_matrix(:,1), 'Color', 'r',"LineWidth",1.5); hold on;
     y_ddd(v) = plot(theta+i-1, Bezier.dddot_B_matrix(:,2), 'Color',  'b',"LineWidth",1.5); hold on;
-    xlabel('$\theta+i-1, \: \theta \in [0,1], \: i \in \mathcal{I}^m$', 'Interpreter','latex','FontSize',12)
+    xlabel('s = $\theta+i-1, \: \theta \in [0,1], \: i \in \mathcal{I}^m$', 'Interpreter','latex','FontSize',12)
     %ylabel('$[deg]$','Interpreter','latex','FontSize',12)
     title('\textbf{Third derivative}','Interpreter','latex','FontSize',12)       
     v = v + 1;
@@ -126,11 +126,10 @@ end
 %% Plotting
 figure(1);
 fff = plot(WP(:,1),WP(:,2),'ko','markersize',10); hold on;
-legend([rr(1), fff, ff(1), r(1)],'Control polygon', 'Waypoints', '$\boldmath{B}(\theta)$',  'Walls','Interpreter','latex');
+legend([ff(1), rr(1), fff, r(1)],'Septic $\boldmath{B}_{1 \times 2}(\theta)$', 'Control polygon', 'Waypoints',  'Walls','Interpreter','latex');
+xlabel('East $[m]$','Interpreter','latex','FontSize',12)
+ylabel('North $[m]$','Interpreter','latex','FontSize',12)
 legend('-DynamicLegend','Location','Best');
-xlabel('$x$','Interpreter','latex')
-ylabel('$y$','Interpreter','latex')
-
 
 figure(4);
 subplot(3,1,1);
@@ -140,5 +139,14 @@ legend([x_dd(1), y_dd(1)],'$x^{''''}(\theta)$','$y^{''''}(\theta)$','Interpreter
 subplot(3,1,3);
 legend([x_ddd(1), y_ddd(1)],'$x^{(3)}(\theta)$','$y^{(3)}(\theta)$','Interpreter','latex','AutoUpdate','off');
 
+Q
 
-
+figure(1)
+set(gcf, 'Color', 'w');
+figure(3)
+set(gcf, 'Color', 'w');
+figure(5)
+set(gcf, 'Color', 'w');
+export_fig(figure(1), 'xy_prag', '-eps');
+export_fig(figure(3), 'der_curv_dcurv_prag', '-eps');
+export_fig(figure(5), 'speedprof_prag', '-eps');

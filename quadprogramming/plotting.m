@@ -7,8 +7,8 @@ rot = [-z(2), z(1)]; % counter clockwise rotation
 
 % With ctrl points
 figure(1); grid on; axis equal;
-plt_strct.fig1_curve(v) = plot(Bezier.B_matrix(:,1), Bezier.B_matrix(:,2), 'Color', colorvec{color}, "LineWidth", 1.5); hold on;
 plt_strct.fig1_ctrl_p(v) = plot(CP_opt(:,1), CP_opt(:,2), 'k.-', 'markersize', 10); hold on;
+plt_strct.fig1_curve(v) = plot(Bezier.B_matrix(:,1), Bezier.B_matrix(:,2), 'Color', colorvec{color}, "LineWidth", 1.5); hold on;
 plt_strct.fig1_walls(v) = plot([WP_current(1); WP_next(1)]-rot(1,1),[WP_current(2); WP_next(2)]-rot(1,2),'--b'); hold on; 
        plot([WP_current(1); WP_next(1)]+rot(1,1),[WP_current(2); WP_next(2)]+rot(1,2),'--b'); hold on;
 
@@ -22,21 +22,21 @@ plt_strct.fig2_walls(v) = plot([WP_current(1); WP_next(1)]-rot(1,1),[WP_current(
 figure(3); grid on;
 subplot(3,1,1); grid on;
 plt_strct.fig3_sub1(v) = plot( s , Bezier.direction, 'Color', colorvec{color}, "LineWidth", 1.5); hold on;
-xlabel('$s =\theta+(i-1)+\omega, \: \theta \in [0,1], \: i \in \mathcal{I}^m$', 'Interpreter','latex','FontSize',12)
+%xlabel('$s =\theta+(i-1)+\omega, \: \theta \in [0,1], \: i \in \mathcal{I}^m$', 'Interpreter','latex','FontSize',12)
 ylabel('$[deg]$','Interpreter','latex','FontSize',12)
-title('\textbf{Path direction}','Interpreter','latex','FontSize',12)
+title('Path direction','Interpreter','latex','FontSize',12)
 % Curvature
 subplot(3,1,2); grid on;
 plt_strct.fig3_sub2(v) = plot( s , Bezier.K, 'Color', colorvec{color},"LineWidth",1.5); hold on;
-xlabel('$s =\theta+(i-1)+\omega, \: \theta \in [0,1], \: i \in \mathcal{I}^m$', 'Interpreter','latex','FontSize',12,'fontweight','bold')
+%xlabel('$s =\theta+(i-1)+\omega, \: \theta \in [0,1], \: i \in \mathcal{I}^m$', 'Interpreter','latex','FontSize',12,'fontweight','bold')
 ylabel('$[m^{-1}]$','Interpreter','latex','FontSize',12)
-title('\textbf{Path curvature}','Interpreter','latex','FontSize',12)
+title('Path curvature','Interpreter','latex','FontSize',12)
 % Rate of change in curvature
 subplot(3,1,3); grid on;
 plt_strct.fig3_sub3(v) = plot( s , Bezier.dot_K, 'Color', colorvec{color},"LineWidth",1.5); hold on;
-xlabel('$s =\theta+(i-1)+\omega, \: \theta \in [0,1], \: i \in \mathcal{I}^m$', 'Interpreter','latex','FontSize',12)
+%xlabel('$s =\theta+(i-1)+\omega, \: \theta \in [0,1], \: i \in \mathcal{I}^m$', 'Interpreter','latex','FontSize',12)
 ylabel('$[(m/s)^{-1}]$','Interpreter','latex','FontSize',12)
-title('\textbf{Rate of change in path curvature}','Interpreter','latex','FontSize',12)
+title('Rate of change in Path Curvature','Interpreter','latex','FontSize',12)
 % Derivatives
 figure(4);
 % first derivative
@@ -68,7 +68,7 @@ figure(5); grid on;
 subplot(3,1,1); grid on;
 hh(v) = plot(s, Bezier.v_d, 'Color', 'r', "LineWidth", 1.5); hold on;
 ylabel('$v(s,t) [m/s]$','Interpreter','latex','FontSize',12)
-title('\textbf{The Speed Profile and its Respective Derivatives}','Interpreter','latex','FontSize',12)
+title('The Speed Profile and its Respective Derivatives','Interpreter','latex','FontSize',12)
 
 subplot(3,1,2); grid on;
 jj(v) = plot(s, Bezier.dtheta_v, 'Color', 'r',"LineWidth",1.5); hold on;
@@ -77,9 +77,9 @@ ylabel('$v^{s}(s,t) \: [m/s]$','Interpreter','latex','FontSize',12)
 subplot(3,1,3); grid on;
 gg(v) = plot(s, Bezier.dt_v, 'Color', 'r',"LineWidth",1.5); hold on;
 ylabel('$v^{t}(s,t) \: [m/s^2]$','Interpreter','latex','FontSize',12)
+    
 
-xlabel('$\theta+i-1, \: \theta \in [0,1], \: i \in \mathcal{I}^m$', 'Interpreter','latex','FontSize',12)
-
+xlabel('$s =\theta+(i-1), \: \theta \in [0,1], \: i \in \mathcal{I}^m$', 'Interpreter','latex','FontSize',12)
 
     
 end
