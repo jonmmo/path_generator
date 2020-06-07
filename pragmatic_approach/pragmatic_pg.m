@@ -1,8 +1,8 @@
 % Script for search-space approach.
 %
+% Requires export_fig package.
 %
-%
-% Magnus Knaedal 30.08.2019
+% Magnus Knaedal 10.06.2020
 clear all; close all;
 %% Parameters
 h = 0.001; % stepsize
@@ -138,8 +138,6 @@ subplot(3,1,2);
 legend([x_dd(1), y_dd(1)],'$x^{''''}(\theta)$','$y^{''''}(\theta)$','Interpreter','latex','AutoUpdate','off');
 subplot(3,1,3);
 legend([x_ddd(1), y_ddd(1)],'$x^{(3)}(\theta)$','$y^{(3)}(\theta)$','Interpreter','latex','AutoUpdate','off');
-
-Q
 
 figure(1)
 set(gcf, 'Color', 'w');

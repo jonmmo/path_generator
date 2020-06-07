@@ -1,8 +1,8 @@
 % Script for optimization approach.
 %
-% Requires Optimization Toolbox.
+% Requires Optimization Toolbox and export_fig package.
 %
-% Magnus Knaedal 30.08.2019
+% Magnus Knaedal 10.06.2020
 clear all; close all; 
 %% Parameters
 h = 0.001; % stepsize
@@ -12,13 +12,15 @@ objective = 1; % Objective function
 
 % Tuning variables
 order = 8; % not used now
-zeta = 1.5; % wall distance
+zeta = 2; % wall distance
 k_max = 3; % max curvature
 
 % Define waypoints
 %WP = [-4 4; 0 4; 4 0; 8 4; 12 8; 16 4; 20 0; 24 4; 28 4]; % zig-zag 
 %WP =[0 0; 2 -2; 4 -2; 6 0; 6 2; 2 6; 2 8; 4 10; 6 10; 8 8; 8 6]; % S-shape
 WP =[0 0; 2 0; 6 -4; 10 -4; 14 0; 14 4; 6 12; 6 16; 10 20; 14 20; 18 16]; % S-shape
+
+WP = [0 0; 5 0; 10 -5; 15 -5; 20 0; 20 5 ;5 20; 5 25; 10 30 ; 15 30; 20 25; 20 20 ; 5 5; 5 0]; % 8-shape
 % Initial heading
 psi_init = 0;
 
